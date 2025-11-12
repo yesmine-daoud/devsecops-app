@@ -1,0 +1,21 @@
+﻿title = "Gitleaks Configuration"
+
+[extend]
+useDefault = true
+
+[[rules]]
+description = "AWS Access Key"
+id = "aws-access-key"
+regex = '''AKIA[0-9A-Z]{16}'''
+
+[[rules]]
+description = "Generic API Key"
+id = "generic-api-key"
+regex = '''(?i)(api[_-]?key|apikey)['\":\s]*[=:]\s*['\"][0-9a-zA-Z]{32,}['\"]'''
+
+[allowlist]
+description = "Allowlist certain paths"
+paths = [
+  '''node_modules/''',
+  '''package-lock.json''',
+]

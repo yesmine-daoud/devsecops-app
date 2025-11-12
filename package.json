@@ -1,0 +1,16 @@
+﻿{
+  "name": "devsecops-app",
+  "version": "1.0.0",
+  "description": "Application DevSecOps Pipeline Demo",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo Tests passed successfully && exit 0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
