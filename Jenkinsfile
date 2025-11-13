@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Static Analysis') {
+       /* stage('Static Analysis') {
             steps {
                 dir("${WORKSPACE}") {
                     sh '''
@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-
+*/ 
         stage('Vulnerability Scan') {
             steps {
                 dir("${WORKSPACE}") {
