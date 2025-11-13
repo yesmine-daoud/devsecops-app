@@ -32,7 +32,7 @@ pipeline {
 
        /* stage('Static Analysis') {
             steps {
-                dir("${WORKSPACE}") {
+                dir("${WORKSPACE}") { }
                     sh '''
                     semgrep --config auto . --json > $REPORT_DIR/semgrep-report.json
                     '''
