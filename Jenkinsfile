@@ -79,4 +79,7 @@ pipeline {
 
     post {
         always {
-            echo
+            echo 'Pipeline terminé. Les rapports sont dans le dossier $REPORT_DIR'
+        }
+    }
+}
