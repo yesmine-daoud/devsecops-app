@@ -4,10 +4,19 @@ pipeline {
     environment {
         SEMGREP_HOME = '/vagrant/.semgrep'
         REPORT_DIR   = '/vagrant/reports'
+        PATH         = "$HOME/.local/bin:$PATH" // Assure que semgrep est trouvé
     }
 
     stages {
-        stage('Declarative: Checkout SCM') {
+        stage('Prepare Workspace') {
+            steps {
+                dir("${WORKSPACE}") {
+                    sh 'mkdir -p $REPORT_DIR'
+                }
+            }
+        }
+
+        stage('Checkout SCM') {
             steps {
                 checkout scm
             }
@@ -25,7 +34,6 @@ pipeline {
             steps {
                 dir("${WORKSPACE}") {
                     sh '''
-                    mkdir -p $REPORT_DIR
                     semgrep --config auto . --json > $REPORT_DIR/semgrep-report.json
                     '''
                 }
@@ -37,7 +45,7 @@ pipeline {
                 dir("${WORKSPACE}") {
                     sh '''
                     echo "Vulnerability Scan stage placeholder"
-                    # Ex: trivy fs --exit-code 1 --no-progress --format json -o $REPORT_DIR/trivy-report.json .
+                    # Exemple : trivy fs --exit-code 1 --no-progress --format json -o $REPORT_DIR/trivy-report.json .
                     '''
                 }
             }
@@ -48,7 +56,7 @@ pipeline {
                 dir("${WORKSPACE}") {
                     sh '''
                     echo "DAST Scan placeholder"
-                    # Ex: zap-cli quick-scan --self-contained -r $REPORT_DIR/zap-report.html http://localhost:3000
+                    # Exemple : zap-cli quick-scan --self-contained -r $REPORT_DIR/zap-report.html http://localhost:3000
                     '''
                 }
             }
@@ -59,7 +67,7 @@ pipeline {
                 dir("${WORKSPACE}") {
                     sh '''
                     echo "SonarQube Analysis placeholder"
-                    # Ex: sonar-scanner -Dsonar.projectKey=devsecops-app -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.login=YOUR_TOKEN
+                    # Exemple : sonar-scanner -Dsonar.projectKey=devsecops-app -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.login=YOUR_TOKEN
                     '''
                 }
             }
@@ -70,7 +78,7 @@ pipeline {
                 dir("${WORKSPACE}") {
                     sh '''
                     echo "Deploy stage placeholder"
-                    # Ex: docker run -d -p 3000:3000 devsecops-app
+                    # Exemple : docker run -d -p 3000:3000 devsecops-app
                     '''
                 }
             }
@@ -79,7 +87,7 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline terminé. Les rapports sont dans le dossier $REPORT_DIR'
+            echo "Pipeline terminé. Les rapports sont dans le dossier $REPORT_DIR"
         }
     }
 }
