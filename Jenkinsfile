@@ -6,6 +6,7 @@ pipeline {
         REPORTS_DIR = '/vagrant/reports'
         ZAP_PORT = '8090'
         SONAR_HOST = 'http://192.168.56.10:9000' // IP de ta VM SonarQube
+        SEMGREP_HOME = '/home/vagrant/.semgrep'   // fixe le home de semgrep
     }
 
     stages {
@@ -26,7 +27,11 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    sh "semgrep --config auto . --json > ${REPORTS_DIR}/semgrep-report.json"
+                    sh """
+                        mkdir -p ${REPORTS_DIR}
+                        export SEMGREP_HOME=${SEMGREP_HOME}
+                        semgrep --config auto . --json > ${REPORTS_DIR}/semgrep-report.json
+                    """
                 }
             }
         }
@@ -34,7 +39,10 @@ pipeline {
         stage('Vulnerability Scan') {
             steps {
                 dir("${PROJECT_DIR}") {
-                    sh "trivy fs --exit-code 1 --format json --output ${REPORTS_DIR}/trivy-report.json ."
+                    sh """
+                        mkdir -p ${REPORTS_DIR}
+                        trivy fs --exit-code 1 --format json --output ${REPORTS_DIR}/trivy-report.json .
+                    """
                 }
             }
         }
@@ -68,4 +76,3 @@ pipeline {
         }
     }
 }
-
