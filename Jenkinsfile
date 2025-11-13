@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-       /* stage('Static Analysis') {
+       /* stage('Static Analysis Semgrep') {
             steps {
                 dir("${WORKSPACE}") { 
                     sh '''
